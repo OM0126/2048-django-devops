@@ -1,0 +1,95 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>2048 Game</title>
+
+    <link rel="stylesheet" href="{% static 'game/css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="game-container">
+
+        <div class="header">
+
+            <div>
+                <h1>2048</h1>
+                <p>Join the numbers and get to 2048!</p>
+            </div>
+
+            <button id="new-game">
+                New Game
+            </button>
+
+        </div>
+
+
+        <div class="score-container">
+
+            <div class="score-box">
+                <span>SCORE</span>
+                <strong id="score">0</strong>
+            </div>
+
+            <div class="score-box">
+                <span>BEST</span>
+                <strong id="best-score">0</strong>
+            </div>
+
+        </div>
+
+
+        <div class="game-board" id="game-board">
+
+            <!-- 16 cells -->
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+        </div>
+
+
+        <div class="instructions">
+
+            <h2>How to play</h2>
+
+            <p>
+                Use the <strong>arrow keys</strong> to move the tiles.
+            </p>
+
+            <p>
+                When two tiles with the same number touch,
+                they merge into one!
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script src="{% static 'game/js/game.js' %}"></script>
+
+</body>
+</html>
