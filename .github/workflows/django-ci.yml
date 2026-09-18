@@ -34,8 +34,8 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ om0126 }}
-          password: ${{ om0126 }}
+          username: ${{  }}
+          password: ${{  }}
 
       - name: Build Docker image
         run: |
