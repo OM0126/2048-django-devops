@@ -30,3 +30,6 @@ jobs:
       - name: Run Django tests
         run: |
           python manage.py test
+      - name: Build Docker image
+        run: |
+          docker build -t 2048-django-devops .
