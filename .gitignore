@@ -1,2 +1,10 @@
 2048.pem
 2048.pem.pub
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+crash.log
+crash.*.log
