@@ -38,11 +38,14 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t om0126/2048-django-devops:latest .
+          docker build \
+            -t om0126/2048-django-devops:latest \
+            -t om0126/2048-django-devops:${{ github.sha }} .
 
-      - name: Push Docker image
+      - name: Push Docker images
         run: |
           docker push om0126/2048-django-devops:latest
+          docker push om0126/2048-django-devops:${{ github.sha }}
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.2.0
@@ -51,7 +54,12 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker pull om0126/2048-django-devops:latest
+            docker pull om0126/2048-django-devops:${{ github.sha }}
+
             docker stop 2048-app || true
             docker rm 2048-app || true
-            docker run -d --name 2048-app -p 8000:8000 om0126/2048-django-devops:latest
+
+            docker run -d \
+              --name 2048-app \
+              -p 8000:8000 \
+              om0126/2048-django-devops:${{ github.sha }}
