@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 2048-deployment
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: "2048"
+
+  template:
+    metadata:
+      labels:
+        app: "2048"
+
+    spec:
+      containers:
+        - name: game-2048
+          image: om0126/2048-django-devops:latest
+
+          ports:
+            - containerPort: 8000
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+
+          env:
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: game-2048-config
+                  key: APP_ENV
+
+            - name: APP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: game-2048-config
+                  key: APP_NAME
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: game-2048-secret
+                  key: SECRET_KEY
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: game-2048-secret
+                  key: DB_PASSWORD
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+
+          volumeMounts:
+            - name: game-2048-storage
+              mountPath: /app/data
+
+      volumes:
+        - name: game-2048-storage
+          persistentVolumeClaim:
+            claimName: game-2048-pvc

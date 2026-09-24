@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: game-2048-config
+data:
+  APP_ENV: "kubernetes"
+  APP_NAME: "2048"
