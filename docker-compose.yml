@@ -1,6 +1,6 @@
 services:
   web:
-    build: .
+    image: om0126/2048-django-devops:latest
     container_name: "2048-django-app"
     expose:
       - "8000"
