@@ -1,494 +1,885 @@
-# 2048 Django DevOps Project
+2048 Django DevOps Project
 
-A 2048 game built using Django, HTML, CSS, and JavaScript.
+A simple 2048 game built with Django and deployed using Docker, Kubernetes, AWS EKS, and GitHub Actions.
 
-The main goal of this project is to build the game first and then use it to learn and implement a complete DevOps and CI/CD workflow.
+The main goal of this project was to learn how an application moves from code → Docker → CI/CD → Kubernetes → AWS.
 
----
+1. Project Overview
 
-## Project Overview
+This project started as a simple Django 2048 game.
 
-This project will be developed in different stages.
+Then we added DevOps tools step by step:
 
-First, the 2048 game will run locally using Django.
+Git and GitHub
 
-After the application is stable, we will add DevOps tools and deploy the application to AWS.
+Docker
 
-The final project will include:
+Docker Hub
 
-* Django
-* HTML
-* CSS
-* JavaScript
-* Git and GitHub
-* GitHub Actions
-* Docker
-* Docker Hub
-* PostgreSQL
-* AWS
-* Terraform
-* Kubernetes
-* Prometheus
-* Grafana
-* Trivy
+GitHub Actions
 
----
+AWS EC2
 
-## Current Project
+Kubernetes
 
-The application is currently running locally using Django.
+Minikube
 
-Local URL:
+Prometheus
 
-```text
-http://127.0.0.1:8000/
-```
+Grafana
 
----
+AWS EKS
 
-## What We Have Done
+AWS EBS storage
 
-### 1. Django Project
+GitHub OIDC
 
-Created a Django project called:
+Automatic deployment to EKS
 
-```text
-game_2048
-```
+2. Final Architecture
 
-Created a Django application:
-
-```text
-game
-```
-
-The Django application is working correctly.
-
----
-
-### 2. Game Page
-
-Created the main 2048 game page using HTML.
-
-The page contains:
-
-* 2048 title
-* Game board
-* 4 x 4 grid
-* Score
-* Best score
-* New Game button
-* Game instructions
-
----
-
-### 3. CSS
-
-Added CSS to design the game.
-
-Current CSS includes:
-
-* Game board design
-* Score boxes
-* Buttons
-* Responsive layout
-* Different colors for different tiles
-
-For example:
-
-```text
-2
-4
-8
-16
-32
-64
-128
-256
-512
-1024
-2048
-```
-
-Each tile has a different style.
-
----
-
-### 4. JavaScript Game Logic
-
-Implemented the main 2048 game logic using JavaScript.
-
-The game currently supports:
-
-* Creating a new game
-* Generating random tiles
-* Moving tiles
-* Merging tiles
-* Calculating score
-* Saving the best score
-* Detecting 2048
-* Detecting game over
-
----
-
-### 5. Keyboard Controls
-
-The game can currently be played using:
-
-```text
-Arrow Up
-Arrow Down
-Arrow Left
-Arrow Right
-```
-
----
-
-# Project Structure
-
-Current project structure:
-
-```text
-game_2048/
-│
-├── manage.py
-├── db.sqlite3
-│
-├── game/
-│   ├── admin.py
-│   ├── apps.py
-│   ├── migrations/
-│   ├── models.py
-│   ├── tests.py
-│   ├── urls.py
-│   ├── views.py
-│   │
-│   ├── templates/
-│   │   └── game/
-│   │       └── index.html
-│   │
-│   └── static/
-│       └── game/
-│           ├── css/
-│           │   └── style.css
-│           └── js/
-│               └── game.js
-│
-└── game_2048/
-    ├── settings.py
-    ├── urls.py
-    ├── asgi.py
-    └── wsgi.py
-```
-
----
-
-# Future Game Features
-
-Before starting the full DevOps setup, the game will be improved.
-
-Planned features:
-
-* Tile merge animations
-* Smooth tile movement
-* Mobile swipe controls
-* Custom win popup
-* Custom game-over popup
-* Restart animation
-* Dark mode
-* User registration
-* User login
-* User logout
-* Score storage
-* Leaderboard
-
----
-
-# DevOps Plan
-
-After the game is stable, we will start the DevOps part.
-
-## 1. Git and GitHub
-
-The project will be stored in GitHub.
-
-We will use Git for:
-
-* Version control
-* Commits
-* Branches
-* Pull requests
-* Project history
-
----
-
-## 2. Testing
-
-Automated tests will be added to the Django project.
-
-Tests will check important parts of the application before deployment.
-
----
-
-## 3. GitHub Actions
-
-GitHub Actions will be used for Continuous Integration.
-
-The pipeline will perform tasks such as:
-
-```text
-Git Push
+Developer
+   |
+   | git push
+   v
+GitHub
    |
    v
 GitHub Actions
    |
-   +-- Install dependencies
+   +--> Run Django tests
    |
-   +-- Run tests
+   +--> Build Docker image
    |
-   +-- Check code
+   +--> Push image to Docker Hub
    |
-   +-- Build application
+   +--> Login to AWS using GitHub OIDC
+   |
+   +--> Connect to EKS
+   |
+   +--> Update Kubernetes Deployment
+   |
+   v
+AWS EKS
+   |
+   v
+2048 Django Pod
+   |
+   v
+Kubernetes Service
+   |
+   v
+User
+
+For monitoring:
+
+Kubernetes
+    |
+    v
+Metrics Server
+    |
+    v
+Prometheus
+    |
+    v
+Grafana
+
+3. Django Application
+
+The application is a 2048 game made with Django.
+
+Main features:
+
+4x4 game board
+
+Move tiles
+
+Merge tiles
+
+Score
+
+Best score
+
+New Game
+
+Win condition
+
+Game Over condition
+
+Local storage for best score
+
+The application runs on port:
+
+8000
+
+4. Run Django Locally
+
+Install dependencies:
+
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+
+Run tests:
+
+python manage.py test
+
+Start the application:
+
+python manage.py runserver
+
+Open:
+
+http://127.0.0.1:8000/
+
+5. Git and GitHub
+
+We used Git to manage the project code.
+
+Basic commands:
+
+git status
+git add .
+git commit -m "message"
+git push origin main
+git pull
+git log --oneline
+
+The GitHub repository is:
+
+OM0126/2048-django-devops
+
+6. Docker
+
+We created a Docker image for the Django application.
+
+Dockerfile:
+
+FROM python:3.12-slim
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+Build the image:
+
+docker build -t 2048:latest .
+
+Run the container:
+
+docker run -d   --name 2048-app   -p 8000:8000   2048:latest
+
+Check the container:
+
+docker ps
+
+Check logs:
+
+docker logs 2048-app
+
+7. Docker Hub
+
+We pushed the Docker image to Docker Hub.
+
+Image:
+
+om0126/2048-django-devops
+
+Login:
+
+docker login
+
+Build:
+
+docker build -t om0126/2048-django-devops:latest .
+
+Push:
+
+docker push om0126/2048-django-devops:latest
+
+Docker Hub is used as our container image storage.
+
+8. AWS EC2 Deployment
+
+Before Kubernetes, we also deployed the Docker container on AWS EC2.
+
+Basic process:
+
+Docker Hub
+    |
+    v
+AWS EC2
+    |
+    v
+Docker Container
+    |
+    v
+Django 2048
+
+Commands used on EC2:
+
+docker pull om0126/2048-django-devops:latest
+
+docker run -d   --name 2048-app   -p 8000:8000   om0126/2048-django-devops:latest
+
+Check:
+
+docker ps
+docker logs 2048-app
+
+We also fixed a Django DisallowedHost problem during the EC2 deployment.
+
+9. GitHub Actions
+
+GitHub Actions was used to automate the project.
+
+The pipeline does:
+
+Code Push
+   |
+   v
+Run Tests
+   |
+   v
+Build Docker Image
+   |
+   v
+Push Image to Docker Hub
+   |
+   v
+Deploy
+
+The first version deployed the application to EC2.
+
+Later, we changed the deployment target to EKS.
+
+10. Kubernetes
+
+We used Kubernetes to manage the Docker application.
+
+Main Kubernetes resources:
+
+Deployment
+
+Service
+
+ConfigMap
+
+Secret
+
+PersistentVolumeClaim
+
+Basic commands:
+
+kubectl get nodes
+kubectl get pods
+kubectl get deployments
+kubectl get services
+kubectl get pvc
+
+Apply a file:
+
+kubectl apply -f <file>.yaml
+
+Check pod details:
+
+kubectl describe pod <pod-name>
+
+Check logs:
+
+kubectl logs <pod-name>
+
+11. Kubernetes Deployment
+
+The Deployment manages our 2048 pod.
+
+It includes:
+
+Docker image
+
+CPU request
+
+Memory request
+
+CPU limit
+
+Memory limit
+
+Readiness probe
+
+Liveness probe
+
+Persistent storage
+
+We used:
+
+strategy:
+  type: Recreate
+
+We used Recreate because our EKS cluster had only one small node and could not run the old and new pods at the same time during a normal rolling update.
+
+12. Kubernetes Service
+
+We created a NodePort service.
+
+type: NodePort
+
+The service sends traffic to the Django container on:
+
+8000
+
+This allowed us to test the application from outside the EKS cluster.
+
+13. ConfigMap and Secret
+
+ConfigMap stores normal configuration:
+
+APP_ENV
+APP_NAME
+
+Secret stores sensitive configuration values:
+
+SECRET_KEY
+DB_PASSWORD
+
+The values used in this project are only dummy practice values.
+
+14. Persistent Storage
+
+We created a PersistentVolumeClaim:
+
+game-2048-pvc
+
+It requests:
+
+1Gi
+
+In EKS, the PVC uses AWS EBS storage through the AWS EBS CSI driver.
+
+15. Minikube
+
+Before using AWS EKS, we practiced Kubernetes locally with Minikube.
+
+Start Minikube:
+
+minikube start --driver=docker
+
+Enable metrics:
+
+minikube addons enable metrics-server
+
+Enable storage:
+
+minikube addons enable default-storageclass
+minikube addons enable storage-provisioner
+
+Check the cluster:
+
+kubectl get nodes
+kubectl get pods
+
+16. Monitoring
+
+We added monitoring using:
+
+Metrics Server
+
+Prometheus
+
+Grafana
+
+Enable Metrics Server:
+
+minikube addons enable metrics-server
+
+Check CPU and memory:
+
+kubectl top pods
+kubectl top nodes
+
+Install Prometheus and Grafana:
+
+helm install monitoring prometheus-community/kube-prometheus-stack
+
+Access Grafana:
+
+kubectl port-forward svc/monitoring-grafana 3000:80
+
+Access Prometheus:
+
+kubectl port-forward svc/monitoring-kube-prometheus-prometheus 9090:9090
+
+What we monitor
+
+We can check:
+
+CPU usage
+
+Memory usage
+
+Pod status
+
+Node information
+
+Restart information
+
+Simple difference:
+
+Prometheus = collects metrics
+
+Grafana = shows metrics
+
+17. Health Checks
+
+We added Kubernetes health checks.
+
+Readiness Probe
+
+It checks if the application is ready to receive traffic.
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 8000
+
+Liveness Probe
+
+It checks if the application is still alive.
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 8000
+
+Simple way to remember:
+
+Readiness = Can I send traffic to you?
+
+Liveness = Are you still alive?
+
+18. AWS EKS
+
+After Minikube, we moved the Kubernetes deployment to AWS EKS.
+
+Cluster:
+
+2048-eks
+
+Region:
+
+us-east-1
+
+Node:
+
+t3.small
+
+Create the cluster:
+
+eksctl create cluster -f eks-cluster.yaml
+
+Connect kubectl to EKS:
+
+aws eks update-kubeconfig   --region us-east-1   --name 2048-eks
+
+Check nodes:
+
+kubectl get nodes
+
+19. EBS CSI Problem
+
+Our PVC initially did not become ready.
+
+We found that the AWS EBS CSI driver had an AWS permission problem.
+
+We installed the EBS CSI addon:
+
+eksctl create addon   --cluster 2048-eks   --region us-east-1   --name aws-ebs-csi-driver   --force
+
+We installed the EKS Pod Identity agent:
+
+eksctl create addon   --cluster 2048-eks   --region us-east-1   --name eks-pod-identity-agent
+
+Then we created the Pod Identity association:
+
+eksctl create podidentityassociation   --cluster 2048-eks   --region us-east-1   --namespace kube-system   --service-account-name ebs-csi-controller-sa   --role-name AmazonEKS_EBS_CSI_DriverRole   --permission-policy-arns arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
+
+After this, the PVC became Bound.
+
+20. EKS Public Testing
+
+The application was exposed using a NodePort.
+
+We opened the NodePort in the EC2 security group for testing.
+
+The application was successfully opened in a browser.
+
+This proved that:
+
+Internet
+   |
+   v
+AWS Node
+   |
+   v
+NodePort
+   |
+   v
+Kubernetes Service
+   |
+   v
+2048 Pod
+
+21. GitHub OIDC
+
+For the final CI/CD setup, we did not use long-term AWS access keys in GitHub Actions.
+
+We used GitHub OIDC.
+
+First we checked:
+
+aws iam list-open-id-connect-providers
+
+Then created the GitHub OIDC provider:
+
+aws iam create-open-id-connect-provider   --url https://token.actions.githubusercontent.com   --client-id-list sts.amazonaws.com   --thumbprint-list 6938fd4d98bab03faadb97b34396831e3780aea1
+
+Then we created an IAM role:
+
+GitHubActions-EKS-2048
+
+This role allows GitHub Actions to access AWS for this project.
+
+22. EKS Access for GitHub Actions
+
+We created an EKS access entry:
+
+aws eks create-access-entry   --cluster-name 2048-eks   --principal-arn arn:aws:iam::583664563026:role/GitHubActions-EKS-2048   --type STANDARD   --region us-east-1
+
+Then associated the EKS policy:
+
+aws eks associate-access-policy   --cluster-name 2048-eks   --principal-arn arn:aws:iam::583664563026:role/GitHubActions-EKS-2048   --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy   --access-scope type=cluster   --region us-east-1
+
+23. OIDC Problem We Faced
+
+Initially GitHub Actions showed:
+
+Could not assume role with OIDC
+Not authorized to perform sts:AssumeRoleWithWebIdentity
+
+The problem was the GitHub OIDC trust policy.
+
+We corrected the trust policy and then checked it with:
+
+aws iam get-role   --role-name GitHubActions-EKS-2048   --query 'Role.AssumeRolePolicyDocument'
+
+After the fix, GitHub Actions was able to authenticate with AWS.
+
+24. EKS Deployment Problem
+
+During deployment, the new pod became:
+
+Pending
+
+We checked:
+
+kubectl describe pod <pod-name>
+
+The event showed:
+
+Too many pods
+
+The reason was simple:
+
+1 small EKS node
+       |
+       +-- old pod
+       |
+       +-- new pod
+
+The node did not have enough capacity to run both during the normal RollingUpdate.
+
+We changed the Deployment strategy to:
+
+strategy:
+  type: Recreate
+
+Now Kubernetes removes the old pod first and then creates the new pod.
+
+25. Final CI/CD Flow
+
+The final pipeline is:
+
+Developer
+   |
+   | git push
+   v
+GitHub
+   |
+   v
+GitHub Actions
+   |
+   +-- Run Django tests
    |
    +-- Build Docker image
-```
-
----
-
-## 4. Docker
-
-The Django application will be containerized using Docker.
-
-The goal is to make the application run consistently on different systems.
-
----
-
-## 5. Docker Hub
-
-The Docker image will be pushed to Docker Hub.
-
-The planned flow is:
-
-```text
-GitHub
+   |
+   +-- Push image to Docker Hub
+   |
+   +-- Login to AWS using OIDC
+   |
+   +-- Configure kubectl
+   |
+   +-- Update EKS Deployment
+   |
+   +-- Wait for rollout
+   |
+   +-- Verify pods/services
    |
    v
-GitHub Actions
+AWS EKS
    |
    v
-Docker Build
-   |
-   v
-Docker Hub
-```
+2048 Application
 
----
+The Docker image is tagged using the GitHub commit SHA:
 
-## 6. PostgreSQL
+om0126/2048-django-devops:${{ github.sha }}
 
-The project currently uses SQLite for local development.
+This means each deployment can use the exact image created from that commit.
 
-Later, PostgreSQL will be added for a production-style database.
+26. Useful Kubernetes Commands
 
----
+Check everything:
 
-## 7. AWS
+kubectl get all
 
-After Docker is working locally, the application will be deployed to AWS.
+Pods:
 
-AWS services will be introduced step-by-step.
+kubectl get pods
 
-Possible services include:
+Detailed pod information:
 
-* EC2
-* VPC
-* Security Groups
-* Load Balancer
-* IAM
-* CloudWatch
+kubectl describe pod <pod-name>
 
----
+Logs:
 
-## 8. Terraform
+kubectl logs <pod-name>
 
-Terraform will be used to create and manage AWS infrastructure.
+CPU and memory:
 
-Instead of creating infrastructure manually, we will use Infrastructure as Code.
+kubectl top pods
+kubectl top nodes
 
-Example:
+Deployments:
 
-```bash
-terraform init
-terraform plan
-terraform apply
-```
+kubectl get deployments
 
----
+Services:
 
-## 9. Kubernetes
+kubectl get services
 
-Kubernetes will be added after the Docker and AWS setup is understood.
+Storage:
 
-The application will eventually run using multiple containers or pods.
+kubectl get pvc
 
-Basic planned structure:
+Deployment status:
 
-```text
-Kubernetes
-    |
-    +-- Pod
-    |
-    +-- Pod
-    |
-    +-- Pod
-    |
-    +-- Service
-```
+kubectl rollout status deployment/2048-deployment
 
----
+27. Problems We Faced
 
-## 10. Continuous Deployment
+During the project we faced real problems and solved them.
 
-After CI is working, Continuous Deployment will be added.
+Docker / Django
 
-The final deployment flow will look like:
+Django DisallowedHost
 
-```text
-Developer
-    |
-    v
-Git Push
-    |
-    v
-GitHub
-    |
-    v
-GitHub Actions
-    |
-    +-- Test
-    +-- Build
-    +-- Security Scan
-    |
-    v
-Docker Hub
-    |
-    v
-AWS / Kubernetes
-    |
-    v
-Running Application
-```
+Docker container problems
 
----
+Docker image build problems
 
-## 11. Security
-
-Security tools will be added to the pipeline.
-
-Trivy will be used to scan Docker images for known vulnerabilities.
-
-Other security practices will include:
-
-* GitHub Secrets
-* Environment variables
-* AWS IAM
-* Secure Docker configuration
-* Kubernetes Secrets
-
----
-
-## 12. Monitoring
-
-Monitoring will be added after deployment.
-
-The planned monitoring stack is:
-
-```text
-Application
-    |
-    v
-Kubernetes
-    |
-    +---- Prometheus
-    |
-    +---- Grafana
-```
-
-Prometheus will collect metrics and Grafana will be used to display them.
-
----
-
-# Final Goal
-
-The final project will be a Django 2048 game with a complete DevOps pipeline.
-
-The complete flow will be:
-
-```text
-Develop
-   |
-   v
 Git
-   |
-   v
-GitHub
-   |
-   v
-Test
-   |
-   v
-GitHub Actions
-   |
-   v
-Docker
-   |
-   v
-Docker Hub
-   |
-   v
-Terraform
-   |
-   v
-AWS
-   |
-   v
+
+Remote history conflict
+
+Push problems
+
+Accidentally exposed Docker Hub PAT
+
+Large Terraform provider accidentally added to Git
+
+EC2
+
+SSH timeout
+
+SSH private-key error
+
+Security Group configuration
+
 Kubernetes
-   |
-   v
-Continuous Deployment
-   |
-   v
-Prometheus + Grafana
-```
 
-The project will be built step-by-step, starting with local development and moving to cloud deployment only after each stage is working correctly.
+Pod Pending
 
----
+Storage/PVC Pending
 
-## Current Status
+EBS CSI permission problem
 
-| Feature               | Status      |
-| --------------------- | ----------- |
-| Django setup          | Completed   |
-| Game page             | Completed   |
-| CSS styling           | Completed   |
-| Tile colors           | Completed   |
-| JavaScript game logic | Completed   |
-| Keyboard controls     | Completed   |
-| GitHub                | In progress |
-| Game animations       | Planned     |
-| Mobile controls       | Planned     |
-| Authentication        | Planned     |
-| Leaderboard           | Planned     |
-| Automated tests       | Planned     |
-| GitHub Actions        | Planned     |
-| Docker                | Planned     |
-| Docker Hub            | Planned     |
-| PostgreSQL            | Planned     |
-| AWS                   | Planned     |
-| Terraform             | Planned     |
-| Kubernetes            | Planned     |
-| Continuous Deployment | Planned     |
-| Trivy                 | Planned     |
-| Prometheus            | Planned     |
-| Grafana               | Planned     |
+Deployment rollout timeout
+
+AWS EKS
+
+EBS CSI permissions
+
+Pod Identity setup
+
+NodePort Security Group
+
+GitHub OIDC authentication
+
+GitHub Actions
+
+AWS role assumption failure
+
+Deployment waiting too long
+
+Kubernetes scheduling problem
+
+The main lesson was:
+
+Don't guess the problem.
+
+Check the logs.
+Check the events.
+Find the exact error.
+Then fix that error.
+
+28. What I Learned
+
+Through this project I learned:
+
+How Django applications work
+
+Git and GitHub
+
+Docker
+
+Docker Hub
+
+GitHub Actions
+
+CI/CD
+
+AWS EC2
+
+Kubernetes basics
+
+Deployments
+
+Services
+
+ConfigMaps
+
+Secrets
+
+Persistent Volumes
+
+Minikube
+
+Prometheus
+
+Grafana
+
+AWS EKS
+
+AWS EBS
+
+EBS CSI
+
+IAM
+
+GitHub OIDC
+
+Kubernetes troubleshooting
+
+Basic monitoring
+
+29. Future Improvements
+
+The project can be improved later with:
+
+AWS Load Balancer
+
+HTTPS
+
+Custom domain
+
+Auto Scaling
+
+Better Kubernetes security
+
+Trivy security scanning
+
+Alerts in Grafana/Prometheus
+
+Better application monitoring
+
+Centralized logging
+
+Terraform automation
+
+Production-ready Django server
+
+These were not required for the current learning project.
+
+30. Final Project Status
+
+Django                  DONE
+Git/GitHub               DONE
+Docker                   DONE
+Docker Hub               DONE
+GitHub Actions           DONE
+EC2 deployment           DONE
+Kubernetes               DONE
+Minikube                 DONE
+Persistent Storage       DONE
+Prometheus               DONE
+Grafana                  DONE
+AWS EKS                  DONE
+EBS CSI                  DONE
+GitHub OIDC              DONE
+Automatic EKS Deployment DONE
+
+Final Result
+
+This project taught me how to take a simple Django application and move it through a complete DevOps process:
+
+Django
+  ↓
+GitHub
+  ↓
+GitHub Actions
+  ↓
+Docker
+  ↓
+Docker Hub
+  ↓
+Kubernetes
+  ↓
+AWS EKS
+  ↓
+Monitoring
+  ↓
+Grafana
+
+The main idea of the project is:
+
+Write code → test it → build it → deploy it → monitor it → troubleshoot it.
